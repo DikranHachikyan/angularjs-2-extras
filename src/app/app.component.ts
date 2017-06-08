@@ -1,33 +1,34 @@
-import { Component, EventEmitter,Output} from '@angular/core';
+import { Component} from '@angular/core';
 
 @Component({
 	selector:'child-component',
 	inputs:['msg'],
-	template:`<p (click)="show(msg)">{{msg}}</p>
-			 <button (click)="sendEvent()">Send</button>`
+	template:`<h2>Child Component</h2>
+			  <p *ngIf="visible">
+			   {{msg}}
+			  </p>
+			 `
 })
 export class ChildInputComponent{
-	@Output() send = new EventEmitter<any>();
-	private data:{} = { quantity:2, title:'Mastering AngularJS', price:10.20};
-	sendEvent():void{
-		this.send.emit( this.data);
-	}
+	visible:boolean = true;
+
 	show(m:string):void{
 		console.log(`Message:${m}`);
+	}
+
+	toggleVisible():void{
+		this.visible = !this.visible;
 	}
 }
 
 @Component({
 	selector:'demo',
 	template:`<h1>{{title}}</h1>
-			 <child-component [msg]="message" (send)="showData($event)"></child-component>`
+			 <child-component [msg]="message" #child ></child-component>
+			 <button (click)="child.toggleVisible()">Show/Hide</button>`
 })
 export class AppComponent{
 	private title:string = 'Parent Component';
 	private message:string = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.';
-
-	showData(data:any):void{
-		console.log(data);
-	}
 
 }
