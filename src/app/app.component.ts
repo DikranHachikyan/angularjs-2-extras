@@ -1,11 +1,14 @@
-import { Component, Input } from '@angular/core';
+import { Component} from '@angular/core';
 
 @Component({
 	selector:'child-component',
-	template:`<p>{{msg}}</p>`
+	inputs:['msg'],
+	template:`<p (click)="show(msg)">{{msg}}</p>`
 })
 export class ChildInputComponent{
-	@Input() private msg:string;
+	show(m:string):void{
+		console.log(`Message:${m}`);
+	}
 }
 
 @Component({
