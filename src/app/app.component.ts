@@ -1,4 +1,4 @@
-import { Component, ViewChild} from '@angular/core';
+import { Component, ViewChildren, QueryList} from '@angular/core';
 
 @Component({
 	selector:'child-component',
@@ -11,7 +11,7 @@ import { Component, ViewChild} from '@angular/core';
 })
 export class ChildInputComponent{
 	visible:boolean = true;
-
+	id:number;
 	show(m:string):void{
 		console.log(`Message:${m}`);
 	}
@@ -19,22 +19,29 @@ export class ChildInputComponent{
 	toggleVisible():void{
 		this.visible = !this.visible;
 	}
+
+	getId():number{
+		return this.id;
+	}
 }
 
 @Component({
 	selector:'demo',
 	template:`<h1>{{title}}</h1>
 			 <child-component [msg]="message" ></child-component>
+			 <child-component [msg]="message" ></child-component>
+			 <child-component [msg]="message" ></child-component>
+			 <child-component [msg]="message" ></child-component>
 			 <button (click)="toggle()">Show/Hide</button>`
 })
 export class AppComponent{
-	@ViewChild(ChildInputComponent)
-	private childComponent:ChildInputComponent;
+	@ViewChildren(ChildInputComponent)
+	private children:QueryList<ChildInputComponent>;
 
 	private title:string = 'Parent Component';
 	private message:string = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.';
 
 	toggle():void{
-		this.childComponent.toggleVisible();
+		this.children.forEach( child => child.toggleVisible());
 	}
 }
