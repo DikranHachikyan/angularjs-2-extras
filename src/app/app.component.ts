@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { Component, ViewChild} from '@angular/core';
 
 @Component({
 	selector:'child-component',
@@ -24,11 +24,17 @@ export class ChildInputComponent{
 @Component({
 	selector:'demo',
 	template:`<h1>{{title}}</h1>
-			 <child-component [msg]="message" #child ></child-component>
-			 <button (click)="child.toggleVisible()">Show/Hide</button>`
+			 <child-component [msg]="message" ></child-component>
+			 <button (click)="toggle()">Show/Hide</button>`
 })
 export class AppComponent{
+	@ViewChild(ChildInputComponent)
+	private childComponent:ChildInputComponent;
+
 	private title:string = 'Parent Component';
 	private message:string = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.';
 
+	toggle():void{
+		this.childComponent.toggleVisible();
+	}
 }
